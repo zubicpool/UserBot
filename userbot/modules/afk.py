@@ -9,7 +9,7 @@ import time
 
 from telethon.events import StopPropagation
 
-from userbot import (AFKREASON, COUNT_MSG, HELPER, ISAFK, LOGGER, LOGGER_GROUP,
+from userbot import (REDIS, COUNT_MSG, HELPER, LOGGER, LOGGER_GROUP,
                      USERS)
 from userbot.events import register
 
@@ -19,12 +19,12 @@ async def mention_afk(mention):
     """ This function takes care of notifying the people who mention you that you are AFK."""
     global COUNT_MSG
     global USERS
-    global ISAFK
+    afkreason = REDIS.get('isafk')
     if mention.message.mentioned and not (await mention.get_sender()).bot:
-        if ISAFK:
+        if afkreason:
             if mention.sender_id not in USERS:
                 await mention.reply(
-                    f"Sorry! My boss is AFK due to `{AFKREASON}`."
+                    f"Sorry! My boss is AFK due to `{afkreason}`."
                     "\nWould ping him to look into the message soon 😉."
                 )
                 USERS.update({mention.sender_id: 1})
@@ -34,7 +34,7 @@ async def mention_afk(mention):
                     await mention.reply(
                         "Sorry! But my boss is still not here."
                         "\nTry to ping him a little later. I am sorry 😖."
-                        f"\nHe told me he was busy with `{AFKREASON}`."
+                        f"\nHe told me he was busy with `{afkreason}`."
                     )
                     USERS[mention.sender_id] = USERS[mention.sender_id] + 1
                     COUNT_MSG = COUNT_MSG + 1
@@ -46,14 +46,14 @@ async def mention_afk(mention):
 @register(incoming=True)
 async def afk_on_pm(sender):
     """ Function which informs people that you are AFK in PM """
-    global ISAFK
+    afkreason = REDIS.get('isafk')
     global USERS
     global COUNT_MSG
     if sender.is_private and not (await sender.get_sender()).bot:
-        if ISAFK:
+        if afkreason:
             if sender.sender_id not in USERS:
                 await sender.reply(
-                    f"Sorry! My boss is AFK due to `{AFKREASON}`."
+                    f"Sorry! My boss is AFK due to `{afkreason}`."
                     "\nI'll ping him to look into the message soon 😉."
                 )
                 USERS.update({sender.sender_id: 1})
@@ -63,7 +63,7 @@ async def afk_on_pm(sender):
                     await sender.reply(
                         "Sorry! But my boss is still not here."
                         "\nTry to ping him a little later. I am sorry 😖."
-                        f"\nHe told me he was busy with `{AFKREASON}`."
+                        f"\nHe told me he was busy with `{afkreason}`."
                     )
                     USERS[sender.sender_id] = USERS[sender.sender_id] + 1
                     COUNT_MSG = COUNT_MSG + 1
@@ -77,27 +77,27 @@ async def set_afk(afk_e):
     """ For .afk command, allows you to inform people that you are afk when they message you """
     if not afk_e.text[0].isalpha() and afk_e.text[0] not in ("/", "#", "@", "!"):
         message = afk_e.text
-        string = str(message[5:])
-        global ISAFK
-        global AFKREASON
+        try:
+            afkreason = str(message[5:])
+        except:
+            afkreason = ''
+        if not afkreason:
+            afkreason = 'No reason'
         await afk_e.edit("AFK AF!")
-        if string != "":
-            AFKREASON = string
         if LOGGER:
             await afk_e.client.send_message(LOGGER_GROUP, "You went AFK!")
-        ISAFK = True
+        REDIS.set('isafk', afkreason)
         raise StopPropagation
 
 
 @register(outgoing=True)
 async def type_afk_is_not_true(notafk):
     """ This sets your status as not afk automatically when you write something while being afk """
-    global ISAFK
     global COUNT_MSG
     global USERS
-    global AFKREASON
-    if ISAFK:
-        ISAFK = False
+    afkreason = REDIS.get('isafk')
+    if afkreason:
+        REDIS.delete('isafk')
         await notafk.respond("I'm no longer AFK.")
         afk_info = await notafk.respond(
             "`You recieved " +
@@ -133,7 +133,6 @@ async def type_afk_is_not_true(notafk):
                 )
         COUNT_MSG = 0
         USERS = {}
-        AFKREASON = "No Reason"
 
 HELPER.update({
     "afk": ".afk <reason>(reason is optional)\
