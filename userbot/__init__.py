@@ -14,6 +14,7 @@ from distutils.util import strtobool as sb
 from dotenv import load_dotenv
 from requests import get
 from telethon import TelegramClient
+import redis
 
 
 load_dotenv("config.env")
@@ -99,6 +100,9 @@ URL = 'https://raw.githubusercontent.com/RaphielGang/databasescape/master/learni
 
 with open('learning-data-root.check', 'wb') as load:
     load.write(get(URL).content)
+
+# Init Redis
+REDIS = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 # Global Variables
 SNIPE_TEXT = ""
