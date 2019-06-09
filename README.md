@@ -18,7 +18,7 @@
 - as well as efficiently managing groups
 - You ended up spamming groups, getting reported left and right,
 - and the Telegram Team deleted your account?
-- And then you pointed your fingers at us for getting your acoount deleted?
+- And then you pointed your fingers at us for getting your account deleted?
 - I will be rolling on the floor laughing at you.
 - /
 ```
