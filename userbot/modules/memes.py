@@ -192,6 +192,14 @@ RUNSREACTS = [
     "I am just walking off, coz me is too fat.",
     "I Fugged off!",
 ]
+RAPE_STRINGS = [
+     "Rape Done Drink The Cum",
+     "The user has been successfully raped",
+     "Dekho Bhaiyya esa hai! Izzat bachailo apni warna Gaand maar lenge tumhari",
+     "Relax your Rear, ders nothing to fear,The Rape train is finally here",
+     "Rape coming... Raped! haha :p",
+     "Lodu Andha hai kya Yaha tera rape ho raha hai aur tu abhi tak yahi gaand mara raha hai lulz",
+]    
 # ===========================================
 
 
@@ -458,8 +466,16 @@ async def bluetext(bt_e):
                 "`BLUETEXT MUST CLICK.`\n"
                 "`Are you a stupid animal which is attracted to colours?`"
             )
-
-
+                     
+@register(outgoing=True, pattern="^.rape$")
+async def raping (raped):
+    """ Dont Rape Too much -_-"""
+    if not raped.text[0].isalpha() and raped.text[0] not in ("/", "#", "@", "!"):
+        index = random.randint(0, len(RAPE_STRINGS))
+        reply_text = RAPE_STRINGS[index]
+        await raped.edit(reply_text)
+                          
+                          
 @register(pattern='.type(?: |$)(.*)')
 async def typewriter(typew):
     """ Just a small command to make your keyboard become a typewriter! """
