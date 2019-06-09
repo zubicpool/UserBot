@@ -9,10 +9,10 @@
 from telethon.tl.functions.contacts import BlockRequest, UnblockRequest
 from telethon.tl.functions.messages import ReportSpamRequest
 from telethon.tl.functions.users import GetFullUserRequest
-from telethon.tl.types import User
+from sqlalchemy.exc import IntegrityError
 
 from userbot import (COUNT_PM, CMD_HELP, BOTLOG, BOTLOG_CHATID,
-                     PM_AUTO_BAN, BRAIN_CHECKER, LASTMSG, LOGS, is_mongo_alive, is_redis_alive)
+                     PM_AUTO_BAN, BRAIN_CHECKER, LASTMSG, LOGS)
 
 from userbot.modules.dbhelper import approval, approve, block_pm, notif_state, notif_off, notif_on
 
@@ -34,9 +34,11 @@ async def permitpm(event):
         if event.sender_id in BRAIN_CHECKER:
             return
         if event.is_private and not (await event.get_sender()).bot:
-            if not is_mongo_alive() or not is_redis_alive():
+            try:
+                from userbot.modules.sql_helper.pm_permit_sql import is_approved
+            except AttributeError:
                 return
-            apprv = await approval(event.chat_id)
+            apprv = is_approved(event.chat_id)
 
             # This part basically is a sanity check
             # If the message that sent before is Unapproved Message
@@ -94,25 +96,6 @@ async def permitpm(event):
                             + " was just another retarded nibba",
                         )
 
-@register(disable_edited=True, outgoing=True)
-async def auto_accept(event):
-    """ Will approve automatically if you texted them first. """
-    if event.is_private and not (await event.get_sender()).bot:
-        if not is_mongo_alive() or not is_redis_alive():
-            return
-        chat = await event.get_chat()
-        if isinstance(chat, User):
-            if is_approved(event.chat_id):
-                return
-            async for message in event.client.iter_messages(chat.id, reverse=True, limit=1):
-                if message.from_id == (await event.client.get_me()).id:
-                    approve(chat.id)
-                if BOTLOG:
-                    await event.client.send_message(
-                        BOTLOG_CHATID,
-                        "#AUTO-APPROVED\n"
-                        + "User: " + f"[{chat.first_name}](tg://user?id={chat.id})",
-                    )
 
 @register(outgoing=True, pattern="^.notifoff$")
 async def notifoff(noff_event):
@@ -137,14 +120,13 @@ async def notifon(non_event):
 @register(outgoing=True, pattern="^.approve$")
 async def approvepm(apprvpm):
     """ For .approve command, give someone the permissions to PM you. """
-    if not apprvpm.text[0].isalpha() and apprvpm.text[0] not in ("/", "#", "@", "!"):
-        if not is_mongo_alive() or not is_redis_alive():
-            await apprvpm.edit("`Database connections failing!`")
+   if not apprvpm.text[0].isalpha() and apprvpm.text[0] not in ("/", "#", "@", "!"):
+        try:
+            from userbot.modules.sql_helper.pm_permit_sql import approve
+        except AttributeError:
+            await apprvpm.edit("`Running on Non-SQL mode!`")
             return
-
-        if await approve(apprvpm.chat_id) == False:
-            return await apprvpm.edit("`User was already approved!`")
-        else:
+          
             if apprvpm.reply_to_msg_id:
                 reply = await apprvpm.get_reply_message()
                 replied_user = await apprvpm.client(GetFullUserRequest(reply.from_id))
@@ -193,9 +175,12 @@ async def blockpm(block):
                 name0 = str(aname.first_name)
                 uid = block.chat_id
     
-            if not is_mongo_alive() or not is_redis_alive():
-                await block.edit("`Database connections failing!`")
-                return
+           try:
+            from userbot.modules.sql_helper.pm_permit_sql import dissprove
+            dissprove(uid)
+        except AttributeError: #Non-SQL mode.
+            pass
+          
             if BOTLOG:
                 await block.client.send_message(
                     BOTLOG_CHATID,
