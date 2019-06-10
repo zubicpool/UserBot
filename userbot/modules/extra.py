@@ -1,6 +1,6 @@
 import asyncio, subprocess
-import time, re, io, os
-from userbot import bot, LOGGER, LOGGER_GROUP, HELPER
+import time, re, io
+from userbot import bot, BOTLOG, BOTLOG_CHATID, CMD_HELP
 from telethon import events, functions, types
 from telethon.events import StopPropagation
 from telethon.tl.functions.messages import ExportChatInviteRequest
@@ -11,11 +11,6 @@ from collections import deque
 from telethon.tl.functions.users import GetFullUserRequest
 from userbot.events import register
 from userbot.modules.rextester.api import UnknownLanguage, Rextester
-from time import sleep
-from selenium import webdriver
-from urllib.parse import quote_plus
-from selenium.webdriver.support.ui import Select
-from selenium.webdriver.chrome.options import Options
 
 @register(outgoing=True, pattern="^.leave$")
 async def leave(e):
@@ -61,15 +56,15 @@ async def _(event):
 		await event.edit("".join(deq))
 		deq.rotate(1)
 
-@register(outgoing=True, pattern="^.sauce$")
+@register(outgoing=True, pattern="^.source$")
 async def source(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("https://github.com/shivamkchoudhary/Userbot/")
+        await e.edit("https://github.com/noobvishal/Userbot/")
 
 @register(outgoing=True, pattern="^.readme$")
 async def reedme(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("https://github.com/shivamkchoudhary/UserBot/blob/master/README.md")
+        await e.edit("https://github.com/noobvishal/UserBot/blob/master/README.md")
 
 @register(outgoing=True, pattern="^.disapprove$")
 async def disapprovepm(disapprvpm):
@@ -95,9 +90,9 @@ async def disapprovepm(disapprvpm):
             f"[{name0}](tg://user?id={disapprvpm.chat_id}) `Disaproved to PM!`"
             )
 
-        if LOGGER:
+        if BOTLOG:
             await bot.send_message(
-                LOGGER_GROUP,
+                BOTLOG_CHATID,
                 f"[{name0}](tg://user?id={disapprvpm.chat_id})"
                 " was disapproved to PM you.",
             )
@@ -168,101 +163,36 @@ async def rextestercli(e):
         await e.edit(output)
 
 
-@register(outgoing=True, pattern="^.setlang")
-async def setlang(prog):
-    if not prog.text[0].isalpha() and prog.text[0] not in ("/", "#", "@", "!"):
-        global LANG
-        LANG = prog.text.split()[1]
-        await prog.edit(f"language set to {LANG}")
-
-
-@register(outgoing=True, pattern="^.carbon")
-async def carbon_api(e):
-    if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
-        await e.edit("Processing...")
-        CARBON = 'https://carbon.now.sh/?l={lang}&code={code}'
-        LANG = "en"
-        textx = await e.get_reply_message()
-        pcode = e.text
-        if pcode[8:]:
-            pcode = str(pcode[8:])
-        elif textx:
-            pcode = str(textx.message)  # Importing message to module
-        code = quote_plus(pcode)  # Converting to urlencoded
-        url = CARBON.format(code=code, lang=LANG)
-        chrome_options = Options()
-        chrome_options.add_argument("--headless")
-        chrome_options.add_argument("--window-size=1920x1080")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument('--disable-gpu')
-        prefs = {'download.default_directory': '/'}
-        chrome_options.add_experimental_option('prefs', prefs)
-        await e.edit("Processing 30%")
-
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.get(url)
-        download_path = '/home/'
-        driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
-        params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_path}}
-        command_result = driver.execute("send_command", params)
-
-        driver.find_element_by_xpath("//button[contains(text(),'Export')]").click()
-        sleep(3)  # this might take a bit.
-        await e.edit("Processing 50%")
-        driver.find_element_by_xpath("//button[contains(text(),'PNG')]").click()
-        sleep(3)  # Waiting for downloading
-
-        await e.edit("Processing 90%")
-        file = '/home/carbon.png'
-        await e.edit("Done!!")
-        await bot.send_file(
-         e.chat_id,
-         file,
-         reply_to=e.message.reply_to_msg_id,
-           )
-
-    os.remove('/home/carbon.png')
-   # Removing carbon.png after uploading
-    await e.delete()
-
-HELPER.update({
-      "carbon":".carbon <text> \n Beautify your code"
-})
-HELPER.update({
-    'setlang': ".setlang <Lang> \
-            \nUsage: It will set language for you carbon module "
-})
-HELPER.update({
+CMD_HELP.update({
     "leave": "Leave a Chat"
 })
-HELPER.update({
+CMD_HELP.update({
     ";__;": "You try it!"
 })
-HELPER.update({
+CMD_HELP.update({
     "cry": "Cry"
 })
-HELPER.update({
+CMD_HELP.update({
     "fp": "Send face palm emoji."
 })
-HELPER.update({
+CMD_HELP.update({
     "moon": "Bot will send a cool moon animation."
 })
-HELPER.update({
+CMD_HELP.update({
     "clock": "Bot will send a cool clock animation."
 })
-HELPER.update({
+CMD_HELP.update({
     "readme": "Reedme."
 })
-HELPER.update({
+CMD_HELP.update({
     "sauce": "source."
 })
-HELPER.update({
+CMD_HELP.update({
     "disapprove": "Disapprove anyone in PM."
 })
-HELPER.update({
+CMD_HELP.update({
     "myusernames": "List of Usernames owned by you."
 })
-HELPER.update({
+CMD_HELP.update({
     "oof": "Same as ;__; but ooof"
 })
