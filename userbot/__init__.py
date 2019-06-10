@@ -92,7 +92,6 @@ bot = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
 # Global Variables
 SNIPE_TEXT = ""
 COUNT_MSG = 0
-BRAIN_CHECKER = []
 USERS = {}
 WIDE_MAP = dict((i, i + 0xFEE0) for i in range(0x21, 0x7F))
 WIDE_MAP[0x20] = 0x3000
