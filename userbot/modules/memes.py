@@ -22,13 +22,13 @@ from userbot.events import register
 
 # ================= CONSTANT =================
 METOOSTR = [
-    "Me too thanks",
-    "Haha yes, me too",
-    "Same lol",
-    "Me irl",
-    "Same here",
-    "Haha yes",
-    "Me rn",
+    "`Me too thanks`",
+    "`Haha yes, me too`",
+    "`Same lol`",
+    "`Me irl`",
+    "`Same here`",
+    "`Haha yes`",
+    "`Same pinch bsdk`",
 ]
 EMOJIS = [
     "😂",
@@ -180,25 +180,25 @@ FACEREACTS = [
     "(｡◕‿◕｡)",
 ]
 RUNSREACTS = [
-    "Runs to Thanos",
-    "Runs far, far away from earth",
-    "Running faster than usian bolt coz I'mma Bot",
-    "Runs to Marie",
-    "This Group is too cancerous to deal with.",
-    "Cya bois",
-    "Kys",
-    "I am a mad person. Plox Ban me.",
-    "I go away",
-    "I am just walking off, coz me is too fat.",
-    "I Fugged off!",
+    "`Runs to Thanos`",
+    "`Runs far, far away from earth`",
+    "`Running faster than usian bolt coz I'mma Bot`",
+    "`Runs to Marie`",
+    "`This Group is too cancerous to deal with.`",
+    "`Cya bois`",
+    "`Kys`",
+    "`I am a mad person. Plox Ban me.`",
+    "`I go away`",
+    "`I am just walking off, coz me is too fat.`",
+    "`I Fugged off!`",
 ]
 RAPE_STRINGS = [
-     "Rape Done Drink The Cum",
-     "The user has been successfully raped",
-     "Dekho Bhaiyya esa hai! Izzat bachailo apni warna Gaand maar lenge tumhari",
-     "Relax your Rear, ders nothing to fear,The Rape train is finally here",
-     "Rape coming... Raped! haha :p",
-     "Lodu Andha hai kya Yaha tera rape ho raha hai aur tu abhi tak yahi gaand mara raha hai lulz",
+     "`Rape Done Drink The Cum`",
+     "`The user has been successfully raped`",
+     "`Dekho Bhaiyya esa hai! Izzat bachailo apni warna Gaand maar lenge tumhari`",
+     "`Relax your Rear, ders nothing to fear,The Rape train is finally here`",
+     "`Rape coming... Raped! haha 😆`",
+     "`Lodu Andha hai kya Yaha tera rape ho raha hai aur tu abhi tak yahi gaand mara raha hai lulz`",
 ]    
 # ===========================================
 
