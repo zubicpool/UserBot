@@ -199,7 +199,15 @@ RAPE_STRINGS = [
      "`Relax your Rear, ders nothing to fear,The Rape train is finally here`",
      "`Rape coming... Raped! haha 😆`",
      "`Lodu Andha hai kya Yaha tera rape ho raha hai aur tu abhi tak yahi gaand mara raha hai lulz`",
-]    
+] 
+ABUSE_STRINGS = [
+       "`Madharchod`",
+	   "`Gaandu`",
+	   "`Chutiya he rah jaye ga`",
+	   "`Ja be Gaandu`",
+	   "`Ma ka Bhodsa madharchod`",
+	   "`mml`",
+]
 # ===========================================
 
 
@@ -485,6 +493,15 @@ async def raping (raped):
         index = random.randint(0, len(RAPE_STRINGS) - 1)
         reply_text = RAPE_STRINGS[index]
         await raped.edit(reply_text)
+                          
+  
+@register(outgoing=True, pattern="^.abuse$")
+async def abusing (abused):
+    """ Dont Abuse Too much bsdk -_-"""
+    if not abused.text[0].isalpha() and abused.text[0] not in ("/", "#", "@", "!"):
+        index = random.randint(0, len(ABUSE_STRINGS) - 1)
+        reply_text = ABUSE_STRINGS[index]
+        await abused.edit(reply_text)
                           
                           
 @register(pattern='.type(?: |$)(.*)')
