@@ -89,7 +89,7 @@ async def tiny_pic_spam(e):
     if not e.text[0].isalpha() and e.text[0] not in ("/", "#", "@", "!"):
         message = e.text
         text = message.split()
-        counter = int(text[1])
+        counter = int(text[0])
         link = str(text[2])
         if range(1, counter):
             await e.client.send_file(e.chat_id, link)
