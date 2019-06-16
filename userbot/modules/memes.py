@@ -351,7 +351,7 @@ async def hacking (hacked):
             await hacked.edit(
                 "`"
                 "Targeted Account Hacked successfully 😎......\n"
-                "Pay 999$ to..." {DEFAULTUSER} "To Remove This Hack...\n"
+                "Pay 999$ to..."{DEFAULTUSER}"To Remove This Hack...\n"
                 "`"
             )
 
