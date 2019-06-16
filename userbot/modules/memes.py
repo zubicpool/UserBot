@@ -482,7 +482,7 @@ async def bluetext(bt_e):
 async def raping (raped):
     """ Dont Rape Too much -_-"""
     if not raped.text[0].isalpha() and raped.text[0] not in ("/", "#", "@", "!"):
-        index = random.randint(0, len(RAPE_STRINGS))
+        index = random.randint(0, len(RAPE_STRINGS) - 1)
         reply_text = RAPE_STRINGS[index]
         await raped.edit(reply_text)
                           
