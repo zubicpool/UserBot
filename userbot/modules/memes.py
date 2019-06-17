@@ -186,7 +186,6 @@ RUNSREACTS = [
     "`Runs to Marie`",
     "`This Group is too cancerous to deal with.`",
     "`Cya bois`",
-    "`Kys`",
     "`I am a mad person. Plox Ban me.`",
     "`I go away`",
     "`I am just walking off, coz me is too fat.`",
@@ -207,6 +206,14 @@ ABUSE_STRINGS = [
 	   "`Ja be Gaandu`",
 	   "`Ma ka Bhodsa madharchod`",
 	   "`mml`",
+]
+GEY_STRINGS = [
+     "`gey bsdk`",
+     "`you gey`",
+     "`gey in the house`",
+     "`chakka here`",
+     "`gey gey gey gey gey gey gey gey`",
+     "`you gey go away`",
 ]
 # ===========================================
 
@@ -358,7 +365,7 @@ async def hacking (hacked):
         if await hacked.get_reply_message():
             await hacked.edit(
                 "`Targeted Account Hacked successfully 😎......`\n"
-                "`Pay 999$ to` @shivamkchoudhary `To Remove This Hack...`\n"
+                "`Pay 6969$ to` @shivamkchoudhary `To Remove This Hack...`\n"
             )
 
 
@@ -477,11 +484,11 @@ async def claptext(memereview):
 
 
 @register(outgoing=True, pattern="^.bt$")
-async def bluetext(bt_e):
+async def bluetext(bte):
     """ Believe me, you will find this useful. """
-    if not bt_e.text[0].isalpha() and bt_e.text[0] not in ("/", "#", "@", "!"):
-        if await bt_e.get_reply_message():
-            await bt_e.edit(
+    if not bte.text[0].isalpha() and bte.text[0] not in ("/", "#", "@", "!"):
+        if await bte.get_reply_message():
+            await bte.edit(
                 "`BLUETEXT MUST CLICK.`\n"
                 "`Are you a stupid animal which is attracted to colours?`"
             )
@@ -495,6 +502,16 @@ async def raping (raped):
         await raped.edit(reply_text)
                           
   
+			  
+@register(outgoing=True, pattern="^.gey$")
+async def geys (geyed):
+    """ Use only for gey ppl -_-"""
+    if not geyed.text[0].isalpha() and geyed.text[0] not in ("/", "#", "@", "!"):
+        index = random.randint(0, len(GEY_STRINGS) - 1)
+        reply_text = GEY_STRINGS[index]
+        await geyed.edit(reply_text)
+			  
+			  
 @register(outgoing=True, pattern="^.abuse$")
 async def abusing (abused):
     """ Dont Abuse Too much bsdk -_-"""
