@@ -208,11 +208,11 @@ ABUSE_STRINGS = [
 	   "`mml`",
 ]
 GEY_STRINGS = [
-     "`gey bsdk`",
+     "`you gey bsdk`",
      "`you gey`",
-     "`gey in the house`",
-     "`chakka here`",
-     "`gey gey gey gey gey gey gey gey`",
+     "`you gey in the house`",
+     "`you chakka`",
+     "`you gey gey gey gey gey gey gey gey`",
      "`you gey go away`",
 ]
 # ===========================================
