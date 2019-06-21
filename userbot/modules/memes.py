@@ -206,6 +206,7 @@ ABUSE_STRINGS = [
 	   "`Ja be Gaandu`",
 	   "`Ma ka Bhodsa madharchod`",
 	   "`mml`",
+	   "`You MotherFukcer`",
 ]
 GEY_STRINGS = [
      "`you gey bsdk`",
@@ -214,6 +215,11 @@ GEY_STRINGS = [
      "`you chakka`",
      "`you gey gey gey gey gey gey gey gey`",
      "`you gey go away`",
+]
+PRO_STRINGS = [
+     "`This gey is pro as phack.`",
+     "`Pros here -_- Time to Leave`",
+     "`Muh Me Lega Bhosdike ?`",
 ]
 # ===========================================
 
@@ -368,7 +374,16 @@ async def hacking (hacked):
                 "`Pay 6969$ to` @shivamkchoudhary `To Remove This Hack...`\n"
             )
 
-
+@register(outgoing=True, pattern="^.kill$")
+async def killing (killed):
+    """ Dont Kill Too much -_-"""
+    if not killed.text[0].isalpha() and killed.text[0] not in ("/", "#", "@", "!"):
+        if await killed.get_reply_message():
+            await killed.edit(
+                "`Targeted User was Killed successfully 😈......`\n"
+            )
+			  
+			  
 @register(outgoing=True, pattern="^.owo(?: |$)(.*)")
 async def faces(owo):
     """ UwU """
@@ -502,6 +517,15 @@ async def raping (raped):
         await raped.edit(reply_text)
                           
   
+@register(outgoing=True, pattern="^.pro$")
+async def proo (pros):
+    """ String for Pros only -_-"""
+    if not pros.text[0].isalpha() and pros.text[0] not in ("/", "#", "@", "!"):
+        index = random.randint(0, len(PRO_STRINGS) - 1)
+        reply_text = PRO_STRINGS[index]
+        await pros.edit(reply_text)
+			  
+			  
 			  
 @register(outgoing=True, pattern="^.gey$")
 async def geys (geyed):
